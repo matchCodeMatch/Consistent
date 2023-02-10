@@ -16,7 +16,7 @@ public class EmployeeConfiguration {
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .paths(PathSelectors.ant("/index/*"))
+                .paths(PathSelectors.ant("/employee/**"))
                 .build()
                 .apiInfo(new ApiInfo("EMPLOYEE API", "Employee management api description",
                         "1.0", "http://matchCodeMatch/employee",

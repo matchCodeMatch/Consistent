@@ -26,19 +26,7 @@ public class EmployeeService implements Services {
         return currentEmployee;
     }
     @Override
-    public void updateEmployee(long id, Employee employee) {
-        Employee oldEmployee = showEmployeeById(id);
-        oldEmployee.setFirstName(employee.getFirstName());
-        oldEmployee.setLastName(employee.getLastName());
-        oldEmployee.setDob(employee.getDob());
-        oldEmployee.setGender(employee.getGender());
-        oldEmployee.setEmail(employee.getEmail());
-        oldEmployee.setHireDate(employee.getHireDate());
-        oldEmployee.setSalary(employee.getSalary());
-        employeeRepository.save(oldEmployee);
-    }
-    @Override
-    public void patchEmployee(long id, Employee employee) {
+    public Employee patchEmployee(long id, Employee employee) {
         Employee oldEmployee = showEmployeeById(id);
         if (employee.getFirstName() != null)
             oldEmployee.setFirstName(employee.getFirstName());
@@ -55,6 +43,7 @@ public class EmployeeService implements Services {
         if (employee.getSalary() != null)
             oldEmployee.setSalary(employee.getSalary());
         employeeRepository.save(oldEmployee);
+        return oldEmployee;
     }
     @Override
     public void deleteEmployee(long id) {

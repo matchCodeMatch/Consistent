@@ -10,13 +10,12 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/index")
+@RequestMapping("employee")
 public class EmployeeController {
     @Autowired
     EmployeeService employeeService ;
-
     //----------------------------------Showing All Employee details.-------------------------------
-    @GetMapping("/allEmployee")
+    @GetMapping
     public ResponseEntity<List<Employee>> getAllEmployee(){
         List<Employee> employeeList= employeeService.showAllEmployees();
         if(employeeList.isEmpty())
@@ -24,38 +23,34 @@ public class EmployeeController {
         return new ResponseEntity(employeeList, HttpStatus.OK);
     }
     //----------------------------------Showing the employee with ID--------------------------------
-    @GetMapping("/employeeById")
-    public ResponseEntity<Employee> getEmployeeById(@RequestParam long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable long id){
         return new ResponseEntity<>(employeeService.showEmployeeById(id),HttpStatus.OK);
     }
     //------------------------------------To add an employee-----------------------------------
-    @PostMapping("/addEmployee")
+    @PostMapping
     public ResponseEntity addEmployee(@RequestBody @Valid Employee employee){
         if(!employee.getHireDate().isAfter(employee.getDob()))
             return new ResponseEntity<>("Hire date is not logically correct.",HttpStatus.BAD_REQUEST);
-        employeeService.addEmployee(employee);
-        return new ResponseEntity("Employee added Successfully.",HttpStatus.CREATED);
+        return new ResponseEntity(employeeService.addEmployee(employee),HttpStatus.CREATED);
     }
     //-------------------------------To update the Employee detail-------------------------------
-    @PutMapping("/updateEmployee")
-    public ResponseEntity updateEmployee(@RequestBody @Valid Employee employee,@RequestParam long id){
+    @PutMapping("/{id}")
+    public ResponseEntity updateEmployee(@RequestBody @Valid Employee employee,@PathVariable long id){
         if(!employee.getHireDate().isAfter(employee.getDob()))
             return new ResponseEntity<>("Hire date is not logically correct.",HttpStatus.BAD_REQUEST);
-        employeeService.updateEmployee(id,employee);
-        return new ResponseEntity("Updated Successfully",HttpStatus.CREATED);
+        return new ResponseEntity(employeeService.patchEmployee(id,employee),HttpStatus.OK);
     }
     //-----------------------------------To patch the employee-----------------------------------
-    @PatchMapping("/patchEmployee")
-    public ResponseEntity patchEmployee(@RequestBody @Valid Employee employee,@RequestParam long id){
-        if(!employee.getHireDate().isAfter(employee.getDob()))
-            return new ResponseEntity<>("Hire date is not logically correct.",HttpStatus.BAD_REQUEST);
-        employeeService.patchEmployee(id,employee);
-        return new ResponseEntity<>("Updated Successfully",HttpStatus.CREATED);
+    @PatchMapping("/{id}")
+    public ResponseEntity patchEmployee(@PathVariable long id,@RequestBody Employee employee){
+        return new ResponseEntity<>(employeeService.patchEmployee(id,employee),HttpStatus.OK);
     }
     //---------------------------------To delete an employee by ID------------------------------------
-    @DeleteMapping("/deleteEmployee")
-    public void deleteEmployee(@RequestParam long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteEmployee(@PathVariable long id){
         employeeService.deleteEmployee(id);
+        return new ResponseEntity<>("Deleted.",HttpStatus.NO_CONTENT);
     }
 }
 

@@ -8,14 +8,22 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.UnexpectedTypeException;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 
 @RestControllerAdvice
 public class EmployeeExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleConstraintViolationException(MethodArgumentNotValidException ex){
-        return ex.getMessage();
+    public Map handleConstraintViolationException(MethodArgumentNotValidException ex){
+        Map<String,String> map = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(error -> {
+            map.put(error.getField(),error.getDefaultMessage());
+        });
+
+        return map;
     }
     @ExceptionHandler(DateTimeParseException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -27,6 +35,10 @@ public class EmployeeExceptionHandler {
     public String handleUnexpectedTypeException(UnexpectedTypeException ex){
         return ex.getMessage();
     }
-
+    @ExceptionHandler(NoSuchElementException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleUnexpectedTypeException(NoSuchElementException ex){
+        return "There was no profile for the given id.";
+    }
 }
 
