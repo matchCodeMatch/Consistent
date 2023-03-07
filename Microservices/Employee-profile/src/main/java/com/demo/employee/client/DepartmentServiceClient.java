@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "DEPARTMENT-MICROSERVICE")
+@FeignClient(name = "DEPARTMENT-MICROSERVICE",configuration = ServiceClientConfiguration.class)
 public interface DepartmentServiceClient {
     @GetMapping("designations/{id}")
     public DesignationDTO getDesignationById(@PathVariable String id);

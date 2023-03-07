@@ -6,17 +6,14 @@ import com.demo.employee.Model.EmployeeProjectMapping;
 import com.demo.employee.client.ProjectServiceClient;
 import com.demo.employee.dao.EmployeeDAO;
 import com.demo.employee.dao.EmployeeProjectMappingDAO;
-import com.demo.employee.dto.EmployeeDTO;
 import com.demo.employee.dto.EmployeeProjectMappingDTO;
 import com.demo.employee.dto.ProjectDTO;
-import com.demo.employee.dto.TaskDTO;
 import com.demo.employee.repository.EmployeeProjectMappingRepository;
 import com.demo.employee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class EmployeeProjectMappingService implements Services<EmployeeProjectMappingDTO> {
